@@ -7,21 +7,63 @@ import AVFoundation
 class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferDelegate, UIWindowSceneDelegate {
     
     //MARK: - Properties
+    
      let session = AVCaptureSession()
      var requests = [VNRequest]()
     
     var nameOfMatchedAdditive = [String]() {
         didSet  {
-            resultsView.handleSwipeUp()
-            resultsView.arr = nameOfMatchedAdditive
+          
+            if (nameOfMatchedAdditive.count > 0)
+            {
+                let vc =  ResultsViewController()
+                
+                vc.array = nameOfMatchedAdditive
+                
+                let nc = UINavigationController(rootViewController: vc)
+                nc.modalPresentationStyle = .overCurrentContext
+                self.navigationController?.present(nc, animated: true)
+            }
+           
+          
             
         }
     }
-      lazy var resultsView = ResultsView()
+      
      let foodAdditivesDescription = DataLoader().foodAdditivesDescription
     
+    private lazy var scanButton:UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Scan", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(didTapScanButton), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+        button.setWidth(100)
+        button.setHeight(70)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1
+        return button
+    }()
     
+    private lazy var stopButton:UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Stop", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(didTapStopButton), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+        button.setWidth(100)
+        button.setHeight(70)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1
+        
+        return button
+    }()
     
+    var scanButtonShown : Bool = true
+    var stopButtonShown : Bool = false
+   
     
     //MARK: - Lifecycle
     
@@ -29,42 +71,81 @@ class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferD
     override func viewDidLoad() {
 
         
-
-        view.backgroundColor = .white
-        navigationController?.navigationBar.isHidden = true
         super.viewDidLoad()
+        view.backgroundColor = .white
+       
+        startLiveVideo()
+         
         
+        view.addSubview(stopButton)
+        stopButton.anchor(  bottom: view.bottomAnchor , paddingBottom: 100)
         
-        view.addSubview(resultsView)
-        resultsView.anchor(left:view.leftAnchor,bottom: view.bottomAnchor,right: view.rightAnchor,paddingBottom: -(view.frame.height - 200)) 
-        resultsView.setHeight(view.frame.height)
-        startTextDetection()
-       startLiveVideo()
+        view.addSubview(scanButton)
+        scanButton.anchor( bottom: view.bottomAnchor , paddingBottom: 100)
+        
+        stopButton.centerX(inView: self.view)
+        scanButton.centerX(inView: self.view)
+        
+        self.navigationController?.title = "Scan"
+        self.navigationItem.title = "Scan Ingredients"
+        
 
     }
     
-   
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        session.startRunning()
-    }
+ 
     
    
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        session.stopRunning()
-    }
     
-    
+
   
+    
 
+    
     
     
     
     
     //MARK: - Actions
+    
+    @objc func didTapScanButton()
+    {
+        
+        
+        if (!session.isRunning)
+       {
+           session.startRunning()
+        }
+        
+        startTextDetection()
+        
+        scanButton.isEnabled = false
+        scanButton.isHidden = true
+        
+        
+        stopButton.isEnabled = true
+        stopButton.isHidden = false
+        
+    }
+    
+    
+    @objc func didTapStopButton()
+    {
+        
+        stopButton.isEnabled = false
+        stopButton.isHidden = true
+        
+        scanButton.isEnabled = true
+        scanButton.isHidden = false
+       if (session.isRunning)
+       {
+            session.stopRunning()
+        }
+
+        
+        
+    }
+    
     
     
     
@@ -96,8 +177,9 @@ class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferD
       
         imageLayer.frame = view.bounds
         imageLayer.videoGravity = .resizeAspectFill
-        view.layer.insertSublayer(imageLayer, below: resultsView.layer)
-       
+        view.layer.insertSublayer(imageLayer, below: self.view.layer)
+        
+        
         session.startRunning()
         
         
@@ -176,13 +258,14 @@ class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferD
     
   
     func render(Detectedtext:[String]) {
+        var arr = [String]()
         Detectedtext.forEach { word in
           
             foodAdditivesDescription.forEach { additive in
                 
                 if word.lowercased().contains(additive.lowercased()) {
-                    if self.nameOfMatchedAdditive.firstIndex(of: additive) == nil {
-                        self.nameOfMatchedAdditive.append(additive)
+                    if arr.firstIndex(of: additive) == nil {
+                        arr.append(additive)
                     }
                  
                 }
@@ -192,7 +275,7 @@ class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferD
         
 
         
-        
+        self.nameOfMatchedAdditive = arr
         
     }
     
