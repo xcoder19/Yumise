@@ -1,9 +1,4 @@
-//
-//  Food.swift
-//  toxicFoodDetector
-//
-//  Created by hedi on 28/2/2023.
-//
+
 
 import Foundation
 import UIKit

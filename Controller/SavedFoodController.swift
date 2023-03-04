@@ -1,9 +1,4 @@
-//
-//  SavedFoodController.swift
-//  toxicFoodDetector
-//
-//  Created by hedi on 1/3/2023.
-//
+
 
 import UIKit
 

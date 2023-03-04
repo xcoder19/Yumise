@@ -27,9 +27,6 @@ class MainTabController: UITabBarController {
         
         let search = templateNavigationController(unselectedImage: UIImage(systemName: "magnifyingglass.circle")!, selectedImage: UIImage(systemName: "magnifyingglass.circle.fill")!, rootViewController: SearchController())
         
-        
-
-        
         viewControllers = [scanner, saved , search]
         
         scanner.navigationController?.title = "Scanner"

@@ -94,16 +94,6 @@ class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferD
     
  
     
-   
-    
-    
-
-  
-    
-
-    
-    
-    
     
     
     //MARK: - Actions
@@ -281,15 +271,4 @@ class ScannerController : UIViewController,AVCaptureVideoDataOutputSampleBufferD
     
   
 }
-
-
-
-
-
-
-
-
-
-    
-    
 

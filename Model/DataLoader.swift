@@ -8,10 +8,13 @@ public class DataLoader {
     @Published var foodAdditives = [Additive]()
     @Published var foodAdditivesDescription = [String]()
     
+    
+    // MARK: - Lifecycle
     init() {
       
         load()
     }
+    //MARK: - Helpers
     func load()  {
         if let fileLocation = Bundle.main.url(forResource: "additives", withExtension: "json")  {
             do {

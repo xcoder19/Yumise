@@ -1,9 +1,4 @@
-//
-//  ResultsViewController.swift
-//  toxicFoodDetector
-//
-//  Created by hedi on 26/2/2023.
-//
+
 
 import UIKit
 
@@ -162,9 +157,7 @@ class ResultsViewController : UIViewController,UITableViewDelegate,UITableViewDa
         
         present(vc,animated: true)
         
-//        let nc = UINavigationController(rootViewController: vc)
-//        nc.modalPresentationStyle = .overCurrentContext
-//        self.navigationController?.present(nc, animated: true)
+
         
        
        

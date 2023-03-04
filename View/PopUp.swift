@@ -1,14 +1,10 @@
-//
-//  PopUp.swift
-//  toxicFoodDetector
-//
-//  Created by hedi on 2/3/2023.
-//
 
 import UIKit
 
 class PopUp:UIView
 {
+    
+    // MARK: - Properties
     
     fileprivate let titleLabel : UILabel = {
         let label = UILabel()
@@ -54,7 +50,6 @@ class PopUp:UIView
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        //self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(animateOut)))
         
         self.frame = UIScreen.main.bounds
         self.addSubview(container)
@@ -84,10 +79,7 @@ class PopUp:UIView
     
     @objc func animateOut()
     {
-//        UIView.animate(withDuration: 0.3)
-//        {
-//            self.container.transform = CGAffineTransform(translationX: 0, y: self.frame.height)
-//        }
+
         self.alpha = 0
        
     }

@@ -1,9 +1,3 @@
-//
-//  WikiViewController.swift
-//  toxicFoodDetector
-//
-//  Created by hedi on 27/2/2023.
-//
 
 import UIKit
 
